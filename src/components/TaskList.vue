@@ -32,7 +32,5 @@
   }
   </script>
   
-  <style scoped>
-  /* Stili specifici per il componente TodoList */
-  </style>
+
   

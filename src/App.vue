@@ -1,12 +1,49 @@
 <script>
-import TaskList from './components/TaskList.vue';
+import Column from './components/Column.vue';
 
 
 export default {
   name: 'App',
   components: {
-    TaskList
+    Column
+  },
+
+  data() {
+    return {
+      columns: []
+    }
+  },
+
+  mounted(){
+    const storedColumns = localcStorage.getItem('columns')
+    if(storedColumns){
+      this.columns = JSON.parse(storedColumns)
+    }
+  },
+
+  methods:{
+    addTask(index, task){
+      if(task){
+        this.columns[index].task.push(task)
+        this.saveToLocalStorage;
+      }
+    },
+    addColumn(){
+      const newColumnTitle = prompt ('INserisci il nome della nuova colonna')
+      if(newColumnTitle){
+        this.columns.push({
+        title:newColumnTitle, tasks: []
+        })
+      }
+    }
+
+
+  },
+
+  saveToLocalStorage(){
+    localcStorage.setItem('columns', JSON.stringify(this.columns))
   }
+
 }
 
 </script>
@@ -16,12 +53,11 @@ export default {
     <div class="text-center mb-10">
       <h1 class="text-3xl">To Do List Parsonale</h1>
     </div>
-    <div class="bg-white w-96 p-4 rounded h-auto">
-      <h1 class="text-xl font-bold text-blue-500">Lista delle cose da fare</h1>
-      <div>
-        <TaskList />
-      </div>
+
+    <div class="flex justify-between mt-4">
+      <Column v-for="(column, index) in columns" :key="index" :title="column.title" :tasks="column.tasks" @add-task="addTask(index, $event)"/>
     </div>
+    <button @click="addColumn" class="mt-4 bg-green-500 text-white p-2 rounded">Aggiungi Colonna</button>
   </div>
 
 
