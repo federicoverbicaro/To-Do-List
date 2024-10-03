@@ -30,9 +30,9 @@ export default {
         this.saveToLocalStorage();
       }
     },
-    removeColumn(index) {
-      this.columns.splice(index, 1) 
-      this.saveToLocalStorage()   
+    removeTask(columnIndex, taskIndex) {
+        this.columns[columnIndex].tasks.splice(taskIndex, 1)
+        this.saveToLocalStorage();
     },
 
     saveToLocalStorage() {
@@ -47,6 +47,10 @@ export default {
         })
         this.saveToLocalStorage();
       }
+    },
+    removeColumn(index) {
+        this.columns.splice(index, 1); 
+        this.saveToLocalStorage();
     }
   },
 }
@@ -62,7 +66,8 @@ export default {
 
     <div class="flex  gap-5 mt-4">
       <Column v-for="(column, index) in columns" :key="index" :title="column.title" :tasks="column.tasks"
-        @add-task="addTask(index, $event)" @remove-column="removeColumn(index)" />
+        @add-task="addTask(index, $event)" @remove-task="removeTask(index, $event)"
+        @remove-column="removeColumn(index)"/>
     </div>
 
   </div>
